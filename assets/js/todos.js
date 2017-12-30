@@ -1,19 +1,32 @@
 // alert("connected");
 
 //check off specific todos by clicking
-$("li").click(function() {
-    //if li is grey
-    if ($(this).css("color") === "rgb(128, 128, 128)") {
-        //turn it black
-        $(this).css({
-            color: "black",
-            textDecoration: "none"
-        });
-    } else {
-        //turn it grey
-        $(this).css({
-            color: "grey",
-            textDecoration: "line-through"
-        });
+///use on("click") on the ul tag, because it exists when the page loads.
+// this will allow all the li elements of that ul have the functionality
+$("ul").on("click", "li", function() {
+    $(this).toggleClass("completed");
+});
+
+//click on X to delete
+$("ul").on("click", "span", function(event) {
+    //parent will give us the parent element as a jQuery element
+    $(this).parent().fadeOut(500, function() {
+        $(this).remove();
+    });
+    //the stopPropagation method of the Event object will stop the event from bubbeling up
+    event.stopPropagation();
+});
+
+//input text will be added to the list
+$("input[type='text'").keypress(function(event) {
+    console.log("event heard");
+    // check for the enter key press
+    if (event.which === 13) {
+        //grabbing new todo teext from input
+        var todoText = $(this).val();
+        //clear out the input by replacing val with empty string
+        $(this).val("");
+        //create a new li and add to ul
+        $("ul").append("<li><span>X</span> " + todoText + "</li>")
     }
 });
